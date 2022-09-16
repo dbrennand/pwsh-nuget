@@ -13,6 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Get short commit SHA
+        id: short_sha
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -32,4 +36,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ GITHUB_SHA::7 }}
+            ghcr.io/${{ github.repository }}:${{ steps.short_sha.outputs.short_sha }}
